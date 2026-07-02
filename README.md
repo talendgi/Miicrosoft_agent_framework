@@ -2,6 +2,8 @@
 
 Visual ETL workflow builder with a React Flow canvas and a Python backend.
 
+https://github.com/user-attachments/assets/974529d4-0690-4588-906e-8c013e5f7b40
+
 ## What is included
 
 - `Canvas` for drag-and-drop workflow composition
