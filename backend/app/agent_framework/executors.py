@@ -6,6 +6,10 @@ from typing import Any
 
 from app.agent_framework.context import WorkflowContext
 
+def handler(func):
+    """Decorator to mark a method as a workflow execution step."""
+    func._is_handler = True
+    return func
 
 class Executor(ABC):
     executor_type: str

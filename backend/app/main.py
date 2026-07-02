@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+import sys
+from pathlib import Path
 from app.api.routes import router
 
+sys.path.insert(0, str(Path(__file__).parent))
 
 def create_app() -> FastAPI:
     app = FastAPI(title="Workflow Studio API", version="0.1.0")

@@ -26,7 +26,7 @@ export function PipelineLibraryPanel({ pipelines, onRun, onLoad, onDelete }: Pro
             </div>
             <div className="row-actions">
               <button type="button" className="secondary-button" onClick={() => onLoad(pipeline)}>
-                <FolderOpen size={14} />
+                <FolderOpen size={12} />
                 Open
               </button>
               <button type="button" className="secondary-button" onClick={() => onRun(pipeline)}>

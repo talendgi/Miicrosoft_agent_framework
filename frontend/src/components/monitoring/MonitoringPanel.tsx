@@ -61,6 +61,7 @@ export function MonitoringPanel({ executions, onDeleteExecution, onClearAll }: P
       log.includes("status=")
     );
   };
+  
 
   return (
     <div className="monitoring-container">

@@ -4,9 +4,12 @@ import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
+from logging import config
 from typing import Any, Optional
 
 from agent_framework import Executor, WorkflowBuilder, WorkflowContext, handler
+# from app.agent_framework.executors import Executor, handler
+# from app.agent_framework.context import WorkflowContext
 
 logger = logging.getLogger("WorkflowStudio")
 
@@ -48,6 +51,22 @@ class MySQLConnector(DatabaseConnector):
         self.connection = None
         self._connected = False
         self._simulate = not all([config.host, config.user, config.database])
+
+        logger.info(f"MySQLConnector initialized:")
+        logger.info(f"  - Host: {config.host}")
+        logger.info(f"  - User: {config.user}")
+        logger.info(f"  - Database: {config.database}")
+        logger.info(f"  - SIMULATION MODE: {self._simulate}")
+        
+        if self._simulate:
+            missing = []
+            if not config.host:
+                missing.append("host")
+            if not config.user:
+                missing.append("user")
+            if not config.database:
+                missing.append("database")
+            logger.warning(f"Missing required fields for real MySQL connection: {missing}")
 
     async def connect(self) -> bool:
         if self._connected:
@@ -94,18 +113,43 @@ class MySQLConnector(DatabaseConnector):
             cursor.close()
 
     async def get_schema(self, table_name: str) -> list[dict[str, Any]]:
+        logger.info(f"🔍 get_schema called for table: {table_name}")
+        logger.info(f"  - _simulate flag: {self._simulate}")
+        logger.info(f"  - Database: {self.config.database}")
+        
         if self._simulate:
+            logger.warning("⚠️  Returning SIMULATED schema data (not real MySQL schema)")
             return [
                 {"COLUMN_NAME": "ID", "DATA_TYPE": "NUMBER", "IS_NULLABLE": "NO"},
                 {"COLUMN_NAME": "NAME", "DATA_TYPE": "VARCHAR", "IS_NULLABLE": "YES"},
             ]
+        
         query = """
             SELECT UPPER(COLUMN_NAME) AS COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_KEY
             FROM INFORMATION_SCHEMA.COLUMNS
             WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s
             ORDER BY ORDINAL_POSITION
         """
-        return await self.execute_query(query, (self.config.database, table_name))
+        
+        logger.info(f"Executing schema query...")
+        logger.info(f"  - Query: {query.strip()}")
+        logger.info(f"  - Parameters: schema={self.config.database}, table={table_name}")
+        
+        try:
+            result = await self.execute_query(query, (self.config.database, table_name))
+            logger.info(f"✅ Schema query returned {len(result)} columns")
+            
+            if len(result) == 0:
+                logger.error(f"❌ No columns found for table {table_name} in schema {self.config.database}")
+                logger.error(f"  - Check if table exists and schema name is correct")
+            
+            for i, col in enumerate(result):
+                logger.info(f"  - Column {i+1}: {col['COLUMN_NAME']} ({col['DATA_TYPE']})")
+            
+            return result
+        except Exception as e:
+            logger.error(f"❌ Schema query failed: {e}")
+            raise
 
 
 class SnowflakeConnector(DatabaseConnector):
@@ -312,26 +356,35 @@ class CheckTableExistsExecutor(Executor):
             await self.dest_connector.disconnect()
 
 
+from app.agents.schema_mapper import SchemaMapperAgent
+
 class CreateTableExecutor(Executor):
     def __init__(
         self,
         id: str,
-        dest_connector: SnowflakeConnector,
+        dest_connector: DatabaseConnector,
         dest_table: str,
         source_connector: MySQLConnector,
         source_table: str,
+        source_db: str = "mysql",  # NEW
+        target_db: str = "snowflake",  # NEW
+        use_llm: bool = False,
     ) -> None:
         super().__init__(id=id)
         self.dest_connector = dest_connector
         self.dest_table = dest_table
         self.source_connector = source_connector
         self.source_table = source_table
+        self.source_db = source_db
+        self.target_db = target_db
+        self.use_llm = use_llm
+        self.schema_agent = SchemaMapperAgent()
 
     @handler
-    async def process(self, input_data: dict[str, Any], ctx: WorkflowContext[dict[str, Any], dict[str, Any]]) -> dict[str, Any]:
-        logger.info(f"CreateTableExecutor: Creating table {self.dest_table}")
+    async def process(self, input_data: dict[str, Any], ctx: WorkflowContext) -> dict[str, Any]:
+        logger.info(f"CreateTableExecutor: Creating {self.target_db} table {self.dest_table} from {self.source_db}")
         
-        # Get source schema from MySQL
+        # Get source schema
         await self.source_connector.connect()
         try:
             source_schema = await self.source_connector.get_schema(self.source_table)
@@ -339,25 +392,53 @@ class CreateTableExecutor(Executor):
         finally:
             await self.source_connector.disconnect()
 
-        # Add processed_at timestamp column
-        source_schema.append(
-            {"COLUMN_NAME": "PROCESSED_AT", "DATA_TYPE": "TIMESTAMP_NTZ", "IS_NULLABLE": "YES"}
-        )
-
-        # Create table in Snowflake
+        # Convert to agent input format
+        columns = [
+            {
+                "name": col["COLUMN_NAME"],
+                "type": col["DATA_TYPE"],
+                "nullable": col.get("IS_NULLABLE", "YES") == "YES"
+            }
+            for col in source_schema
+        ]
+        
+        # Use agent to generate DDL
+        agent_input = {
+            "source_db": self.source_db,
+            "target_db": self.target_db,
+            "source_table": self.source_table,
+            "target_table": self.dest_table,
+            "columns": columns,
+        }
+        
+        agent_result = await self.schema_agent.process(agent_input)
+        
+        if "error" in agent_result:
+            logger.error(f"DDL generation failed: {agent_result['error']}")
+            return {"error": agent_result['error'], "table_created": False}
+        
+        create_ddl = agent_result.get("ddl")
+        logger.info(f"Generated DDL ({agent_result['columns_count']} columns): {self.source_db} -> {self.target_db}")
+        logger.info(f"DDL preview: {create_ddl[:300]}...")
+        
+        # Execute DDL
         await self.dest_connector.connect()
         try:
-            await self.dest_connector.create_table_if_not_exists(self.dest_table, source_schema)
-            logger.info(f"✅ Table {self.dest_table} created successfully")
+            await self.dest_connector.execute_query(create_ddl)
+            logger.info(f"✅ Table {self.dest_table} created successfully in {self.target_db}")
             
-            payload = {
+            return {
                 "table_created": True,
                 "dest_table": self.dest_table,
-                "columns": len(source_schema),
+                "source_table": self.source_table,
+                "source_db": self.source_db,
+                "target_db": self.target_db,
+                "columns": agent_result['columns_count'],
+                "unmapped_types": agent_result.get('unmapped_types', []),
             }
-            await ctx.yield_output(payload)
-            await ctx.send_message(payload)
-            return payload
+        except Exception as e:
+            logger.error(f"Failed to create table: {e}")
+            return {"table_created": False, "error": str(e)}
         finally:
             await self.dest_connector.disconnect()
 
@@ -390,9 +471,9 @@ class RouterExecutor(Executor):
         logger.info(f"Routing to: {target_executor}")
         
         payload = {
+            **input_data,  # preserves records at the top level
             "routed_to": target_executor,
             "route_value": route_value,
-            "input_data": input_data,
         }
         
         await ctx.yield_output(payload)
@@ -409,44 +490,42 @@ class FilterTransformExecutor(Executor):
 
     @handler
     async def process(self, input_data: dict[str, Any], ctx: WorkflowContext[dict[str, Any], dict[str, Any]]) -> dict[str, Any]:
-        logger.info(f"🔵 FilterTransformExecutor received input: {input_data}")
-        logger.info(f"Input type: {type(input_data)}")
-        logger.info(f"Input keys: {input_data.keys() if isinstance(input_data, dict) else 'N/A'}")
+        logger.info(f"🔵 FilterTransformExecutor STARTED")
+        logger.info(f"  - Input keys: {list(input_data.keys()) if isinstance(input_data, dict) else 'N/A'}")
         
         records = input_data.get("records", [])
-        logger.info(f"Records found: {len(records)}")
+        logger.info(f"  - Records received: {len(records)}")
         
-        # Also check if data is in a different structure
-        if not records:
-            # Try common alternative structures
-            if isinstance(input_data, dict):
-                for key, value in input_data.items():
-                    if isinstance(value, list) and len(value) > 0:
-                        logger.info(f"Found data in key '{key}': {len(value)} items")
-                        if isinstance(value[0], dict):
-                            records = value
-                            break
-            
-            # Check context state
-            logger.info(f"Context state keys: {list(ctx.state.keys()) if hasattr(ctx, 'state') else 'N/A'}")
+        if not records and isinstance(input_data, dict):
+            # Try to find records in alternative locations
+            for key in input_data.keys():
+                if isinstance(input_data[key], list) and len(input_data[key]) > 0:
+                    records = input_data[key]
+                    logger.info(f"  - Found records in key '{key}': {len(records)}")
+                    break
         
         original_count = len(records)
         filtered_records = records[:self.limit]
         filtered_count = len(filtered_records)
         
-        logger.info(f"FilterTransform: {original_count} -> {filtered_count} records (limit: {self.limit})")
+        logger.info(f"📊 Filtered: {original_count} -> {filtered_count} records (limit: {self.limit})")
         
+        # IMPORTANT: Preserve all original data AND add filtered records
         payload = {
+            **input_data,  # Copy all input data
             "records": filtered_records,
-            "source_table": input_data.get("source_table"),
             "original_count": original_count,
             "filtered_count": filtered_count,
             "limit": self.limit,
         }
         
+        # Also store in context for safety
+        ctx.set_state("records", filtered_records)
         ctx.set_state("filtered_count", filtered_count)
+        
         await ctx.yield_output(payload)
         await ctx.send_message(payload)
+        logger.info(f"✅ FilterTransformExecutor COMPLETED")
         return payload
     
 class LoadExecutor(Executor):
@@ -457,19 +536,39 @@ class LoadExecutor(Executor):
 
     @handler
     async def process(self, input_data: dict[str, Any], ctx: WorkflowContext[dict[str, Any], dict[str, Any]]) -> dict[str, Any]:
-        records = input_data.get("records", [])
+        logger.info(f"🔵 LoadExecutor STARTED")
+        logger.info(f"  - Destination table: {self.dest_table}")
+        logger.info(f"  - Input data keys: {list(input_data.keys()) if isinstance(input_data, dict) else 'NOT A DICT'}")
+        logger.info(f"  - Input data type: {type(input_data)}")
         
-        logger.info(f"LoadExecutor started: {len(records)} records to load")
-        logger.info(f"Destination table: {self.dest_table}")
+        records = input_data.get("records", [])
+        logger.info(f"  - Records in input: {len(records)}")
+        
+        # Try to get records from context if not in input
+        if not records:
+            records = ctx.state.get("records", [])
+            logger.info(f"  - Records from context: {len(records)}")
         
         if not records:
-            logger.warning("No records to load - skipping")
-            empty_payload = {"status": "SKIPPED", "rows_loaded": 0}
+            # Try alternative keys
+            for key in ["data", "filtered_records", "output"]:
+                if key in input_data:
+                    potential_records = input_data[key]
+                    if isinstance(potential_records, list):
+                        records = potential_records
+                        logger.info(f"  - Found records in key '{key}': {len(records)}")
+                        break
+        
+        if not records:
+            logger.warning("⚠️  NO RECORDS FOUND - Skipping load")
+            logger.warning(f"  - Full input data: {input_data}")
+            logger.warning(f"  - Context state keys: {list(ctx.state.keys())}")
+            
+            empty_payload = {"status": "SKIPPED", "rows_loaded": 0, "reason": "No records found"}
             await ctx.yield_output(empty_payload)
             return empty_payload
 
-        # Show first record for debugging
-        logger.info(f"Sample record: {records[0]}")
+        logger.info(f"✅ Loading {len(records)} records to {self.dest_table}")
         
         await self.dest_connector.connect()
         try:
@@ -477,66 +576,51 @@ class LoadExecutor(Executor):
             placeholders = ", ".join(["%s"] * len(columns))
             insert_query = f"INSERT INTO {self.dest_table} ({', '.join(columns)}) VALUES ({placeholders})"
             
-            logger.info(f"INSERT Query: {insert_query}")
-            logger.info(f"Columns: {columns}")
+            logger.info(f"  - INSERT Query: {insert_query}")
+            logger.info(f"  - Columns: {columns}")
+            logger.info(f"  - First record: {records[0]}")
             
             rows_loaded = 0
-            errors = []
-            
             for i, record in enumerate(records):
                 try:
                     normalized = {key.upper(): value for key, value in record.items()}
                     values = tuple(normalized.get(column) for column in columns)
                     
-                    logger.debug(f"Inserting row {i+1}: {values}")
+                    logger.debug(f"  - Inserting row {i+1}: {values}")
                     
-                    result = await self.dest_connector.execute_query(insert_query, values)
-                    logger.debug(f"Insert result: {result}")
-                    
+                    await self.dest_connector.execute_query(insert_query, values)
                     rows_loaded += 1
                     
-                    if i == 0:  # Log only first row details
-                        logger.info(f"First row inserted successfully")
-                        
                 except Exception as row_error:
-                    logger.error(f"Failed to insert row {i+1}: {row_error}")
-                    logger.error(f"Record data: {record}")
-                    errors.append(f"Row {i+1}: {str(row_error)}")
+                    logger.error(f"  - Failed to insert row {i+1}: {row_error}")
+                    logger.error(f"  - Record: {record}")
             
-            if errors:
-                logger.error(f"Total errors: {len(errors)}")
-                for err in errors[:5]:  # Show first 5 errors
-                    logger.error(f"  - {err}")
+            logger.info(f"✅ Loaded {rows_loaded}/{len(records)} rows successfully")
             
             ctx.set_state("loaded_count", rows_loaded)
             payload = {
-                "status": "COMPLETED" if not errors else "PARTIAL",
+                "status": "COMPLETED",
                 "source_table": input_data.get("source_table"),
                 "dest_table": self.dest_table,
                 "rows_loaded": rows_loaded,
-                "rows_failed": len(errors),
-                "errors": errors[:10] if errors else None,  # Include first 10 errors
+                "rows_failed": len(records) - rows_loaded,
             }
             await ctx.yield_output(payload)
             await ctx.send_message(payload)
             return payload
             
         except Exception as e:
-            logger.error(f"Error loading data into {self.dest_table}: {e}", exc_info=True)
-            payload= {
+            logger.error(f"❌ Error loading data: {e}", exc_info=True)
+            payload = {
                 "status": "FAILED",
-                "source_table": input_data.get("source_table"),
-                "dest_table": self.dest_table,
-                "rows_loaded": 0,
                 "error": str(e),
+                "rows_loaded": 0,
             }
             await ctx.yield_output(payload)
-            await ctx.send_message(payload)
             return payload
         finally:
             await self.dest_connector.disconnect()
-            logger.info("Snowflake connection closed")
-
+            logger.info("🔌 Snowflake connection closed")
 
 def create_etl_workflow(
     source_table: str,

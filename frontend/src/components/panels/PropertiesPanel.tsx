@@ -18,6 +18,10 @@ type ConfigState = {
   limit: string;
   routes_true: string;
   routes_false: string;
+  source_db: string;      
+  target_db: string;     
+  project_id: string;     //(for BigQuery)
+  dataset_id: string;    //(for BigQuery)
 };
 
 const defaultConfigState: ConfigState = {
@@ -29,6 +33,10 @@ const defaultConfigState: ConfigState = {
   limit: "10",
   routes_true: "",
   routes_false: "",
+  source_db: "",      
+  target_db: "",      
+  project_id: "",      //(for BigQuery)
+  dataset_id: "",     //(for BigQuery)
 };
 
 export function PropertiesPanel({ selectedNodeId, nodes, connections, onUpdateNode, onApplyConfiguration }: Props) {
@@ -56,6 +64,10 @@ export function PropertiesPanel({ selectedNodeId, nodes, connections, onUpdateNo
       limit: String(config.limit ?? 10),
       routes_true: String(routes.true ?? ""),
       routes_false: String(routes.false ?? ""),
+      source_db: String(config.source_db ?? ""),
+      target_db: String(config.target_db ?? ""),
+      project_id: String(config.project_id ?? ""),
+      dataset_id: String(config.dataset_id ?? ""),
     };
   }, [node]);
 
@@ -117,6 +129,10 @@ export function PropertiesPanel({ selectedNodeId, nodes, connections, onUpdateNo
         limit: String(parsedConfig.limit ?? 10),
         routes_true: String(routes.true ?? ""),
         routes_false: String(routes.false ?? ""),
+        source_db: String(parsedConfig.source_db ?? ""),
+        target_db: String(parsedConfig.target_db ?? ""),
+        project_id: String(parsedConfig.project_id ?? ""),
+        dataset_id: String(parsedConfig.dataset_id ?? ""),
       });
     } catch {
       setConfigError("Config must be valid JSON.");
@@ -194,14 +210,59 @@ export function PropertiesPanel({ selectedNodeId, nodes, connections, onUpdateNo
       )}
 
       {executorType === "create_table" && (
-        <label>
-          Destination Table
-          <input
-            value={formState.destination_table}
-            onChange={(event) => updateConfig({ destination_table: event.target.value })}
-            placeholder="warehouse.fact_customers"
-          />
-        </label>
+        <>
+          <label>
+            Source Database Type
+            <select 
+              value={formState.source_db ?? "mysql"} 
+              onChange={(event) => updateConfig({ source_db: event.target.value })}
+            >
+              <option value="mysql">MySQL</option>
+              <option value="postgresql">PostgreSQL</option>
+              <option value="sqlserver">SQL Server</option>
+            </select>
+          </label>
+          <label>
+            Target Database Type
+            <select 
+              value={formState.target_db ?? "snowflake"} 
+              onChange={(event) => updateConfig({ target_db: event.target.value })}
+            >
+              <option value="snowflake">Snowflake</option>
+              <option value="bigquery">BigQuery</option>
+              <option value="redshift">Redshift</option>
+              <option value="postgresql">PostgreSQL</option>
+            </select>
+          </label>
+          <label>
+            Destination Table
+            <input
+              value={formState.destination_table}
+              onChange={(event) => updateConfig({ destination_table: event.target.value })}
+              placeholder="warehouse.fact_customers"
+            />
+          </label>
+          {formState.target_db === "bigquery" && (
+            <>
+              <label>
+                Project ID (BigQuery)
+                <input
+                  value={formState.project_id ?? ""}
+                  onChange={(event) => updateConfig({ project_id: event.target.value })}
+                  placeholder="my-gcp-project"
+                />
+              </label>
+              <label>
+                Dataset ID (BigQuery)
+                <input
+                  value={formState.dataset_id ?? ""}
+                  onChange={(event) => updateConfig({ dataset_id: event.target.value })}
+                  placeholder="my_dataset"
+                />
+              </label>
+            </>
+          )}
+        </>
       )}
 
       {executorType === "router" && (

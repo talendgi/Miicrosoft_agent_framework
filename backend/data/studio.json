@@ -36,7 +36,7 @@
     {
       "id": "8e62174a-614f-4153-a400-03dcdbce0136",
       "created_at": "2026-07-02T06:16:41.722987",
-      "updated_at": "2026-07-02T06:18:23.234066",
+      "updated_at": "2026-07-02T09:40:36.607512",
       "name": "MySQL to Snowflake ETL Pipeline",
       "description": "Compose ETL workflow with reusable executors.",
       "nodes": [
@@ -58,9 +58,9 @@
               "table": "blood_compatibility_lookup",
               "columns": [
                 "donor_blood_type",
-                "recipient_blood_type",
                 "compatible_for_rbc_transfusion",
-                "compatibility_level"
+                "compatibility_level",
+                "recipient_blood_type"
               ],
               "mode": "append",
               "limit": 10
@@ -82,7 +82,7 @@
             "description": "Filter records - take first N rows.",
             "config": {
               "mode": "append",
-              "limit": 11
+              "limit": 12
             }
           }
         },
@@ -124,7 +124,7 @@
               "mode": "append",
               "limit": 10,
               "routes": {
-                "true": "load_date",
+                "true": "load_data",
                 "false": "create_table"
               }
             }
@@ -10288,6 +10288,2083 @@
         "[DEBUG] Matched node 2f4a6dcc-ab09-4a5a-894b-4e811bd0e502 (check_table_exists) to executor check_table_exists",
         "[DEBUG] Matched node f66d4b38-7526-41ab-b87f-7abd179aa2a7 (router) to executor router",
         "[2026-07-02T06:34:51.179831] Pipeline completed successfully"
+      ]
+    },
+    {
+      "id": "9f6a660f-8020-409d-99ee-a0a4c11d19d3",
+      "created_at": "2026-07-02T08:14:34.445065",
+      "updated_at": "2026-07-02T08:14:34.445065",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "success",
+      "started_at": "2026-07-02T08:14:34.444268",
+      "finished_at": "2026-07-02T08:14:44.658259",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "success",
+          "started_at": "2026-07-02T08:14:34.444268",
+          "finished_at": "2026-07-02T08:14:44.658259",
+          "output": {
+            "records": [
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "O+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "ideal"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "O-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "A+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "A-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "B+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "B-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "AB+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "AB-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "O+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "O-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "ideal"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "A+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "A-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "B+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "B-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "AB+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "AB-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "A+",
+                "recipient_blood_type": "O+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "A+",
+                "recipient_blood_type": "O-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "A+",
+                "recipient_blood_type": "A+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "ideal"
+              },
+              {
+                "donor_blood_type": "A+",
+                "recipient_blood_type": "A-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "A+",
+                "recipient_blood_type": "B+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "A+",
+                "recipient_blood_type": "B-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "A+",
+                "recipient_blood_type": "AB+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "A+",
+                "recipient_blood_type": "AB-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "A-",
+                "recipient_blood_type": "O+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "A-",
+                "recipient_blood_type": "O-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "A-",
+                "recipient_blood_type": "A+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "A-",
+                "recipient_blood_type": "A-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "ideal"
+              },
+              {
+                "donor_blood_type": "A-",
+                "recipient_blood_type": "B+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "A-",
+                "recipient_blood_type": "B-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "A-",
+                "recipient_blood_type": "AB+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "A-",
+                "recipient_blood_type": "AB-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "B+",
+                "recipient_blood_type": "O+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "B+",
+                "recipient_blood_type": "O-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "B+",
+                "recipient_blood_type": "A+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "B+",
+                "recipient_blood_type": "A-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "B+",
+                "recipient_blood_type": "B+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "ideal"
+              },
+              {
+                "donor_blood_type": "B+",
+                "recipient_blood_type": "B-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "B+",
+                "recipient_blood_type": "AB+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "B+",
+                "recipient_blood_type": "AB-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "B-",
+                "recipient_blood_type": "O+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "B-",
+                "recipient_blood_type": "O-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "B-",
+                "recipient_blood_type": "A+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "B-",
+                "recipient_blood_type": "A-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "B-",
+                "recipient_blood_type": "B+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "B-",
+                "recipient_blood_type": "B-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "ideal"
+              },
+              {
+                "donor_blood_type": "B-",
+                "recipient_blood_type": "AB+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "B-",
+                "recipient_blood_type": "AB-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "AB+",
+                "recipient_blood_type": "O+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB+",
+                "recipient_blood_type": "O-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB+",
+                "recipient_blood_type": "A+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB+",
+                "recipient_blood_type": "A-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB+",
+                "recipient_blood_type": "B+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB+",
+                "recipient_blood_type": "B-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB+",
+                "recipient_blood_type": "AB+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "ideal"
+              },
+              {
+                "donor_blood_type": "AB+",
+                "recipient_blood_type": "AB-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB-",
+                "recipient_blood_type": "O+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB-",
+                "recipient_blood_type": "O-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB-",
+                "recipient_blood_type": "A+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB-",
+                "recipient_blood_type": "A-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB-",
+                "recipient_blood_type": "B+",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB-",
+                "recipient_blood_type": "B-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "AB-",
+                "recipient_blood_type": "AB+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "AB-",
+                "recipient_blood_type": "AB-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "ideal"
+              }
+            ],
+            "source_table": "blood_compatibility_lookup"
+          },
+          "logs": [
+            "executor_invoked: {\"pipeline_id\": \"8e62174a-614f-4153-a400-03dcdbce0136\", \"trigger\": \"ui\"}",
+            "intermediate: table=blood_compatibility_lookup records=64",
+            "executor_completed: list[2 items]"
+          ],
+          "error": null
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "success",
+          "started_at": "2026-07-02T08:14:34.444268",
+          "finished_at": "2026-07-02T08:14:44.658259",
+          "output": {
+            "records": [
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "O+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "ideal"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "O-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "A+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "A-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "B+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "B-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "AB+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "AB-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "O+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "O-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "ideal"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "A+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "A-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              }
+            ],
+            "source_table": "blood_compatibility_lookup",
+            "original_count": 64,
+            "filtered_count": 12,
+            "limit": 12
+          },
+          "logs": [
+            "executor_invoked: table=blood_compatibility_lookup records=64",
+            "output: table=blood_compatibility_lookup records=12",
+            "executor_completed: list[2 items]"
+          ],
+          "error": null
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "success",
+          "started_at": "2026-07-02T08:14:34.444268",
+          "finished_at": "2026-07-02T08:14:44.658259",
+          "output": {
+            "records": [
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "O+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "ideal"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "O-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "A+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "A-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "B+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "B-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "AB+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O+",
+                "recipient_blood_type": "AB-",
+                "compatible_for_rbc_transfusion": 0,
+                "compatibility_level": "incompatible"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "O+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "O-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "ideal"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "A+",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              },
+              {
+                "donor_blood_type": "O-",
+                "recipient_blood_type": "A-",
+                "compatible_for_rbc_transfusion": 1,
+                "compatibility_level": "acceptable"
+              }
+            ],
+            "source_table": "blood_compatibility_lookup",
+            "original_count": 64,
+            "filtered_count": 12,
+            "limit": 12,
+            "table_exists": true
+          },
+          "logs": [
+            "executor_invoked: table=blood_compatibility_lookup records=12",
+            "output: table=blood_compatibility_lookup records=12",
+            "executor_completed: list[2 items]"
+          ],
+          "error": null
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "success",
+          "started_at": "2026-07-02T08:14:34.444268",
+          "finished_at": "2026-07-02T08:14:44.658259",
+          "output": {
+            "routed_to": "load_date",
+            "route_value": true,
+            "input_data": {
+              "records": [
+                {
+                  "donor_blood_type": "O+",
+                  "recipient_blood_type": "O+",
+                  "compatible_for_rbc_transfusion": 1,
+                  "compatibility_level": "ideal"
+                },
+                {
+                  "donor_blood_type": "O+",
+                  "recipient_blood_type": "O-",
+                  "compatible_for_rbc_transfusion": 0,
+                  "compatibility_level": "incompatible"
+                },
+                {
+                  "donor_blood_type": "O+",
+                  "recipient_blood_type": "A+",
+                  "compatible_for_rbc_transfusion": 1,
+                  "compatibility_level": "acceptable"
+                },
+                {
+                  "donor_blood_type": "O+",
+                  "recipient_blood_type": "A-",
+                  "compatible_for_rbc_transfusion": 0,
+                  "compatibility_level": "incompatible"
+                },
+                {
+                  "donor_blood_type": "O+",
+                  "recipient_blood_type": "B+",
+                  "compatible_for_rbc_transfusion": 1,
+                  "compatibility_level": "acceptable"
+                },
+                {
+                  "donor_blood_type": "O+",
+                  "recipient_blood_type": "B-",
+                  "compatible_for_rbc_transfusion": 0,
+                  "compatibility_level": "incompatible"
+                },
+                {
+                  "donor_blood_type": "O+",
+                  "recipient_blood_type": "AB+",
+                  "compatible_for_rbc_transfusion": 1,
+                  "compatibility_level": "acceptable"
+                },
+                {
+                  "donor_blood_type": "O+",
+                  "recipient_blood_type": "AB-",
+                  "compatible_for_rbc_transfusion": 0,
+                  "compatibility_level": "incompatible"
+                },
+                {
+                  "donor_blood_type": "O-",
+                  "recipient_blood_type": "O+",
+                  "compatible_for_rbc_transfusion": 1,
+                  "compatibility_level": "acceptable"
+                },
+                {
+                  "donor_blood_type": "O-",
+                  "recipient_blood_type": "O-",
+                  "compatible_for_rbc_transfusion": 1,
+                  "compatibility_level": "ideal"
+                },
+                {
+                  "donor_blood_type": "O-",
+                  "recipient_blood_type": "A+",
+                  "compatible_for_rbc_transfusion": 1,
+                  "compatibility_level": "acceptable"
+                },
+                {
+                  "donor_blood_type": "O-",
+                  "recipient_blood_type": "A-",
+                  "compatible_for_rbc_transfusion": 1,
+                  "compatibility_level": "acceptable"
+                }
+              ],
+              "source_table": "blood_compatibility_lookup",
+              "original_count": 64,
+              "filtered_count": 12,
+              "limit": 12,
+              "table_exists": true
+            }
+          },
+          "logs": [
+            "executor_invoked: table=blood_compatibility_lookup records=12",
+            "output: {\"routed_to\": \"load_date\", \"route_value\": true, \"input_data\": {\"records\": [{\"donor_blood_type\": \"O+\", \"recipient_blood_type\": \"O+\", \"compatible_for_rbc_transfusion\": 1, \"compatibility_level\": \"ideal\"}",
+            "executor_completed: list[2 items]"
+          ],
+          "error": null
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "success",
+          "started_at": "2026-07-02T08:14:34.444268",
+          "finished_at": "2026-07-02T08:14:44.658259",
+          "output": {
+            "table_created": true,
+            "dest_table": "blood_compatibility_lookup",
+            "columns": 3
+          },
+          "logs": [
+            "executor_invoked: {\"routed_to\": \"load_date\", \"route_value\": true, \"input_data\": {\"records\": [{\"donor_blood_type\": \"O+\", \"recipient_blood_type\": \"O+\", \"compatible_for_rbc_transfusion\": 1, \"compatibility_level\": \"ideal\"}",
+            "output: {\"table_created\": true, \"dest_table\": \"blood_compatibility_lookup\", \"columns\": 3}",
+            "executor_completed: list[2 items]"
+          ],
+          "error": null
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "success",
+          "started_at": "2026-07-02T08:14:34.444268",
+          "finished_at": "2026-07-02T08:14:44.658259",
+          "output": {
+            "status": "SKIPPED",
+            "rows_loaded": 0
+          },
+          "logs": [
+            "executor_invoked: {\"routed_to\": \"load_date\", \"route_value\": true, \"input_data\": {\"records\": [{\"donor_blood_type\": \"O+\", \"recipient_blood_type\": \"O+\", \"compatible_for_rbc_transfusion\": 1, \"compatibility_level\": \"ideal\"}",
+            "output: status=SKIPPED rows_loaded=0 dest_table=None",
+            "executor_completed: list[1 items]"
+          ],
+          "error": null
+        }
+      ],
+      "logs": [
+        "[2026-07-02T08:14:34.444268] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T08:14:34.444268] Nodes: 6, Edges: 5",
+        "[2026-07-02T08:14:34.484246] Workflow builder created successfully",
+        "[2026-07-02T08:14:44.656219] event=executor_invoked executor=68880dda-2e7a-46f9-a867-44822da85f7d payload={\"pipeline_id\": \"8e62174a-614f-4153-a400-03dcdbce0136\", \"trigger\": \"ui\"}",
+        "[2026-07-02T08:14:44.656219] event=intermediate executor=68880dda-2e7a-46f9-a867-44822da85f7d payload=table=blood_compatibility_lookup records=64",
+        "[DEBUG] Captured output for executor=68880dda-2e7a-46f9-a867-44822da85f7d",
+        "[2026-07-02T08:14:44.656219] event=executor_completed executor=68880dda-2e7a-46f9-a867-44822da85f7d payload=list[2 items]",
+        "[2026-07-02T08:14:44.656219] event=superstep_started executor=workflow payload=None",
+        "[2026-07-02T08:14:44.656219] event=executor_invoked executor=0d32f473-8870-4ae5-a1d1-9749e6bf7ede payload=table=blood_compatibility_lookup records=64",
+        "[2026-07-02T08:14:44.656219] event=output executor=0d32f473-8870-4ae5-a1d1-9749e6bf7ede payload=table=blood_compatibility_lookup records=12",
+        "[DEBUG] Captured output for executor=0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+        "[2026-07-02T08:14:44.656219] event=executor_completed executor=0d32f473-8870-4ae5-a1d1-9749e6bf7ede payload=list[2 items]",
+        "[2026-07-02T08:14:44.656219] event=superstep_completed executor=workflow payload=None",
+        "[2026-07-02T08:14:44.656219] event=superstep_started executor=workflow payload=None",
+        "[2026-07-02T08:14:44.656219] event=executor_invoked executor=2f4a6dcc-ab09-4a5a-894b-4e811bd0e502 payload=table=blood_compatibility_lookup records=12",
+        "[2026-07-02T08:14:44.656219] event=output executor=2f4a6dcc-ab09-4a5a-894b-4e811bd0e502 payload=table=blood_compatibility_lookup records=12",
+        "[DEBUG] Captured output for executor=2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+        "[2026-07-02T08:14:44.656219] event=executor_completed executor=2f4a6dcc-ab09-4a5a-894b-4e811bd0e502 payload=list[2 items]",
+        "[2026-07-02T08:14:44.656219] event=superstep_completed executor=workflow payload=None",
+        "[2026-07-02T08:14:44.656219] event=superstep_started executor=workflow payload=None",
+        "[2026-07-02T08:14:44.656219] event=executor_invoked executor=f66d4b38-7526-41ab-b87f-7abd179aa2a7 payload=table=blood_compatibility_lookup records=12",
+        "[2026-07-02T08:14:44.656219] event=output executor=f66d4b38-7526-41ab-b87f-7abd179aa2a7 payload={\"routed_to\": \"load_date\", \"route_value\": true, \"input_data\": {\"records\": [{\"donor_blood_type\": \"O+\", \"recipient_blood_type\": \"O+\", \"compatible_for_rbc_transfusion\": 1, \"compatibility_level\": \"ideal\"}",
+        "[DEBUG] Captured output for executor=f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+        "[2026-07-02T08:14:44.658259] event=executor_completed executor=f66d4b38-7526-41ab-b87f-7abd179aa2a7 payload=list[2 items]",
+        "[2026-07-02T08:14:44.658259] event=superstep_completed executor=workflow payload=None",
+        "[2026-07-02T08:14:44.658259] event=superstep_started executor=workflow payload=None",
+        "[2026-07-02T08:14:44.658259] event=executor_invoked executor=bd543fd1-26c5-44fa-a734-98fdfd031a9e payload={\"routed_to\": \"load_date\", \"route_value\": true, \"input_data\": {\"records\": [{\"donor_blood_type\": \"O+\", \"recipient_blood_type\": \"O+\", \"compatible_for_rbc_transfusion\": 1, \"compatibility_level\": \"ideal\"}",
+        "[2026-07-02T08:14:44.658259] event=output executor=bd543fd1-26c5-44fa-a734-98fdfd031a9e payload={\"table_created\": true, \"dest_table\": \"blood_compatibility_lookup\", \"columns\": 3}",
+        "[DEBUG] Captured output for executor=bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+        "[2026-07-02T08:14:44.658259] event=executor_completed executor=bd543fd1-26c5-44fa-a734-98fdfd031a9e payload=list[2 items]",
+        "[2026-07-02T08:14:44.658259] event=executor_invoked executor=9fe91f1e-0d67-4ec4-8400-f56567ee1384 payload={\"routed_to\": \"load_date\", \"route_value\": true, \"input_data\": {\"records\": [{\"donor_blood_type\": \"O+\", \"recipient_blood_type\": \"O+\", \"compatible_for_rbc_transfusion\": 1, \"compatibility_level\": \"ideal\"}",
+        "[2026-07-02T08:14:44.658259] event=output executor=9fe91f1e-0d67-4ec4-8400-f56567ee1384 payload=status=SKIPPED rows_loaded=0 dest_table=None",
+        "[DEBUG] Captured output for executor=9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+        "[2026-07-02T08:14:44.658259] event=executor_completed executor=9fe91f1e-0d67-4ec4-8400-f56567ee1384 payload=list[1 items]",
+        "[2026-07-02T08:14:44.658259] event=superstep_completed executor=workflow payload=None",
+        "[2026-07-02T08:14:44.658259] event=superstep_started executor=workflow payload=None",
+        "[2026-07-02T08:14:44.658259] event=superstep_completed executor=workflow payload=None",
+        "[DEBUG] outputs_by_executor keys: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[DEBUG] node IDs: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[2026-07-02T08:14:44.658259] Pipeline completed successfully"
+      ]
+    },
+    {
+      "id": "c24c2bb9-6225-4633-9cc6-9d68dd5353bb",
+      "created_at": "2026-07-02T09:22:34.197117",
+      "updated_at": "2026-07-02T09:22:34.197117",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "failed",
+      "started_at": "2026-07-02T09:22:34.197117",
+      "finished_at": "2026-07-02T09:22:34.208809",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "failed",
+          "started_at": "2026-07-02T09:22:34.197117",
+          "finished_at": "2026-07-02T09:22:34.208809",
+          "output": {},
+          "logs": [
+            "TypeError: Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'"
+          ],
+          "error": "Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'"
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "failed",
+          "started_at": "2026-07-02T09:22:34.197117",
+          "finished_at": "2026-07-02T09:22:34.208809",
+          "output": {},
+          "logs": [
+            "TypeError: Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'"
+          ],
+          "error": "Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'"
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "failed",
+          "started_at": "2026-07-02T09:22:34.197117",
+          "finished_at": "2026-07-02T09:22:34.208809",
+          "output": {},
+          "logs": [
+            "TypeError: Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'"
+          ],
+          "error": "Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'"
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "failed",
+          "started_at": "2026-07-02T09:22:34.197117",
+          "finished_at": "2026-07-02T09:22:34.208809",
+          "output": {},
+          "logs": [
+            "TypeError: Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'"
+          ],
+          "error": "Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'"
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "failed",
+          "started_at": "2026-07-02T09:22:34.197117",
+          "finished_at": "2026-07-02T09:22:34.208809",
+          "output": {},
+          "logs": [
+            "TypeError: Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'"
+          ],
+          "error": "Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'"
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "failed",
+          "started_at": "2026-07-02T09:22:34.197117",
+          "finished_at": "2026-07-02T09:22:34.208809",
+          "output": {},
+          "logs": [
+            "TypeError: Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'"
+          ],
+          "error": "Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'"
+        }
+      ],
+      "logs": [
+        "[2026-07-02T09:22:34.197117] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T09:22:34.197117] Nodes: 6, Edges: 5",
+        "[2026-07-02T09:22:34.206804] Pipeline failed: TypeError: Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'",
+        "Traceback (most recent call last):\n  File \"C:\\Users\\ITS-523\\Documents\\Miicrosoft_agent_framework\\backend\\app\\services\\pipeline_service.py\", line 116, in run_pipeline\n    workflow = self._build_workflow(pipeline)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\ITS-523\\Documents\\Miicrosoft_agent_framework\\backend\\app\\services\\pipeline_service.py\", line 237, in _build_workflow\n    executors[node.id] = ExtractExecutor(node.id, MySQLConnector(mysql_config), table)\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Can't instantiate abstract class ExtractExecutor without an implementation for abstract method 'execute'\n"
+      ]
+    },
+    {
+      "id": "b16500ef-509a-42e8-815c-b57a81a2cb2a",
+      "created_at": "2026-07-02T09:26:21.752972",
+      "updated_at": "2026-07-02T09:26:21.752972",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "success",
+      "started_at": "2026-07-02T09:26:21.752972",
+      "finished_at": "2026-07-02T09:26:21.778419",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "success",
+          "started_at": "2026-07-02T09:26:21.752972",
+          "finished_at": "2026-07-02T09:26:21.778419",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "success",
+          "started_at": "2026-07-02T09:26:21.752972",
+          "finished_at": "2026-07-02T09:26:21.778419",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "success",
+          "started_at": "2026-07-02T09:26:21.752972",
+          "finished_at": "2026-07-02T09:26:21.778419",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "success",
+          "started_at": "2026-07-02T09:26:21.752972",
+          "finished_at": "2026-07-02T09:26:21.778419",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "success",
+          "started_at": "2026-07-02T09:26:21.752972",
+          "finished_at": "2026-07-02T09:26:21.778419",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "success",
+          "started_at": "2026-07-02T09:26:21.752972",
+          "finished_at": "2026-07-02T09:26:21.778419",
+          "output": {},
+          "logs": [],
+          "error": null
+        }
+      ],
+      "logs": [
+        "[2026-07-02T09:26:21.752972] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T09:26:21.752972] Nodes: 6, Edges: 5",
+        "[2026-07-02T09:26:21.778419] Workflow builder created successfully",
+        "[DEBUG] outputs_by_executor keys: []",
+        "[DEBUG] node IDs: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[2026-07-02T09:26:21.778419] Pipeline completed successfully"
+      ]
+    },
+    {
+      "id": "56248491-422b-4cab-a388-84ff716164a6",
+      "created_at": "2026-07-02T09:31:23.266816",
+      "updated_at": "2026-07-02T09:31:23.266816",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "failed",
+      "started_at": "2026-07-02T09:31:23.265816",
+      "finished_at": "2026-07-02T09:31:23.289930",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "failed",
+          "started_at": "2026-07-02T09:31:23.265816",
+          "finished_at": "2026-07-02T09:31:23.289930",
+          "output": {},
+          "logs": [
+            "TypeError: WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'"
+          ],
+          "error": "WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'"
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "failed",
+          "started_at": "2026-07-02T09:31:23.265816",
+          "finished_at": "2026-07-02T09:31:23.289930",
+          "output": {},
+          "logs": [
+            "TypeError: WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'"
+          ],
+          "error": "WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'"
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "failed",
+          "started_at": "2026-07-02T09:31:23.265816",
+          "finished_at": "2026-07-02T09:31:23.289930",
+          "output": {},
+          "logs": [
+            "TypeError: WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'"
+          ],
+          "error": "WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'"
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "failed",
+          "started_at": "2026-07-02T09:31:23.265816",
+          "finished_at": "2026-07-02T09:31:23.289930",
+          "output": {},
+          "logs": [
+            "TypeError: WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'"
+          ],
+          "error": "WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'"
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "failed",
+          "started_at": "2026-07-02T09:31:23.265816",
+          "finished_at": "2026-07-02T09:31:23.289930",
+          "output": {},
+          "logs": [
+            "TypeError: WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'"
+          ],
+          "error": "WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'"
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "failed",
+          "started_at": "2026-07-02T09:31:23.265816",
+          "finished_at": "2026-07-02T09:31:23.289930",
+          "output": {},
+          "logs": [
+            "TypeError: WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'"
+          ],
+          "error": "WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'"
+        }
+      ],
+      "logs": [
+        "[2026-07-02T09:31:23.265816] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T09:31:23.265816] Nodes: 6, Edges: 5",
+        "[2026-07-02T09:31:23.274857] Workflow builder created successfully",
+        "[2026-07-02T09:31:23.284457] Pipeline failed: TypeError: WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'",
+        "Traceback (most recent call last):\n  File \"C:\\Users\\ITS-523\\Documents\\Miicrosoft_agent_framework\\backend\\app\\services\\pipeline_service.py\", line 119, in run_pipeline\n    run_result = asyncio.run(workflow.run({\"pipeline_id\": pipeline.id, \"trigger\": \"ui\"}))\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\ITS-523\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\runners.py\", line 195, in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\ITS-523\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\ITS-523\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\base_events.py\", line 691, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"C:\\Users\\ITS-523\\Documents\\Miicrosoft_agent_framework\\backend\\app\\agent_framework\\__init__.py\", line 108, in run\n    current_output, current_ctx = await self._execute_executor(self.start_executor, {})\n                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\ITS-523\\Documents\\Miicrosoft_agent_framework\\backend\\app\\agent_framework\\__init__.py\", line 80, in _execute_executor\n    ctx = WorkflowContext()\n          ^^^^^^^^^^^^^^^^^\nTypeError: WorkflowContext.__init__() missing 1 required positional argument: 'pipeline_id'\n"
+      ]
+    },
+    {
+      "id": "55037172-727c-4f6c-9928-3d40729aca68",
+      "created_at": "2026-07-02T09:34:56.703471",
+      "updated_at": "2026-07-02T09:34:56.703471",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "success",
+      "started_at": "2026-07-02T09:34:56.703471",
+      "finished_at": "2026-07-02T09:35:05.561119",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "success",
+          "started_at": "2026-07-02T09:34:56.703471",
+          "finished_at": "2026-07-02T09:35:05.561119",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "success",
+          "started_at": "2026-07-02T09:34:56.703471",
+          "finished_at": "2026-07-02T09:35:05.561119",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "success",
+          "started_at": "2026-07-02T09:34:56.703471",
+          "finished_at": "2026-07-02T09:35:05.561119",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "success",
+          "started_at": "2026-07-02T09:34:56.703471",
+          "finished_at": "2026-07-02T09:35:05.561119",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "success",
+          "started_at": "2026-07-02T09:34:56.703471",
+          "finished_at": "2026-07-02T09:35:05.561119",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "success",
+          "started_at": "2026-07-02T09:34:56.703471",
+          "finished_at": "2026-07-02T09:35:05.561119",
+          "output": {},
+          "logs": [],
+          "error": null
+        }
+      ],
+      "logs": [
+        "[2026-07-02T09:34:56.703471] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T09:34:56.703471] Nodes: 6, Edges: 5",
+        "[2026-07-02T09:34:56.712786] Workflow builder created successfully",
+        "[2026-07-02T09:35:05.561119] event=None executor=workflow payload=None",
+        "[2026-07-02T09:35:05.561119] event=None executor=workflow payload=None",
+        "[2026-07-02T09:35:05.561119] event=None executor=workflow payload=None",
+        "[2026-07-02T09:35:05.561119] event=None executor=workflow payload=None",
+        "[2026-07-02T09:35:05.561119] event=None executor=workflow payload=None",
+        "[2026-07-02T09:35:05.561119] event=None executor=workflow payload=None",
+        "[DEBUG] outputs_by_executor keys: []",
+        "[DEBUG] node IDs: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[2026-07-02T09:35:05.561119] Pipeline completed successfully"
+      ]
+    },
+    {
+      "id": "66a3866a-7b17-43ef-9de3-a683faf53233",
+      "created_at": "2026-07-02T09:40:39.709387",
+      "updated_at": "2026-07-02T09:40:39.709387",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "success",
+      "started_at": "2026-07-02T09:40:39.709387",
+      "finished_at": "2026-07-02T09:40:43.030959",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "success",
+          "started_at": "2026-07-02T09:40:39.709387",
+          "finished_at": "2026-07-02T09:40:43.030333",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "success",
+          "started_at": "2026-07-02T09:40:39.709387",
+          "finished_at": "2026-07-02T09:40:43.030333",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "success",
+          "started_at": "2026-07-02T09:40:39.709387",
+          "finished_at": "2026-07-02T09:40:43.030333",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "success",
+          "started_at": "2026-07-02T09:40:39.709387",
+          "finished_at": "2026-07-02T09:40:43.030333",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "success",
+          "started_at": "2026-07-02T09:40:39.709387",
+          "finished_at": "2026-07-02T09:40:43.030333",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "success",
+          "started_at": "2026-07-02T09:40:39.709387",
+          "finished_at": "2026-07-02T09:40:43.030333",
+          "output": {},
+          "logs": [],
+          "error": null
+        }
+      ],
+      "logs": [
+        "[2026-07-02T09:40:39.709387] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T09:40:39.709387] Nodes: 6, Edges: 5",
+        "[2026-07-02T09:40:39.728171] Workflow builder created successfully",
+        "[2026-07-02T09:40:43.029132] event=None executor=workflow payload=None",
+        "[2026-07-02T09:40:43.029132] event=None executor=workflow payload=None",
+        "[2026-07-02T09:40:43.029132] event=None executor=workflow payload=None",
+        "[2026-07-02T09:40:43.029132] event=None executor=workflow payload=None",
+        "[2026-07-02T09:40:43.029132] event=None executor=workflow payload=None",
+        "[2026-07-02T09:40:43.029132] event=None executor=workflow payload=None",
+        "[DEBUG] outputs_by_executor keys: []",
+        "[DEBUG] node IDs: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[2026-07-02T09:40:43.030959] Pipeline completed successfully"
+      ]
+    },
+    {
+      "id": "6dab113d-808b-49d7-b312-b113269975d5",
+      "created_at": "2026-07-02T09:42:56.135881",
+      "updated_at": "2026-07-02T09:42:56.135881",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "success",
+      "started_at": "2026-07-02T09:42:56.135881",
+      "finished_at": "2026-07-02T09:43:08.539494",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "success",
+          "started_at": "2026-07-02T09:42:56.135881",
+          "finished_at": "2026-07-02T09:43:08.539494",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "success",
+          "started_at": "2026-07-02T09:42:56.135881",
+          "finished_at": "2026-07-02T09:43:08.539494",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "success",
+          "started_at": "2026-07-02T09:42:56.135881",
+          "finished_at": "2026-07-02T09:43:08.539494",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "success",
+          "started_at": "2026-07-02T09:42:56.135881",
+          "finished_at": "2026-07-02T09:43:08.539494",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "success",
+          "started_at": "2026-07-02T09:42:56.135881",
+          "finished_at": "2026-07-02T09:43:08.539494",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "success",
+          "started_at": "2026-07-02T09:42:56.135881",
+          "finished_at": "2026-07-02T09:43:08.539494",
+          "output": {},
+          "logs": [],
+          "error": null
+        }
+      ],
+      "logs": [
+        "[2026-07-02T09:42:56.135881] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T09:42:56.135881] Nodes: 6, Edges: 5",
+        "[2026-07-02T09:42:56.141272] Workflow builder created successfully",
+        "[2026-07-02T09:43:08.538977] event=None executor=workflow payload=None",
+        "[2026-07-02T09:43:08.538977] event=None executor=workflow payload=None",
+        "[2026-07-02T09:43:08.538977] event=None executor=workflow payload=None",
+        "[2026-07-02T09:43:08.538977] event=None executor=workflow payload=None",
+        "[2026-07-02T09:43:08.538977] event=None executor=workflow payload=None",
+        "[2026-07-02T09:43:08.538977] event=None executor=workflow payload=None",
+        "[DEBUG] outputs_by_executor keys: []",
+        "[DEBUG] node IDs: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[2026-07-02T09:43:08.539494] Pipeline completed successfully"
+      ]
+    },
+    {
+      "id": "531f9cda-5ce3-46f1-9f01-27a33de2c078",
+      "created_at": "2026-07-02T09:43:08.606721",
+      "updated_at": "2026-07-02T09:43:08.606721",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "success",
+      "started_at": "2026-07-02T09:43:08.606721",
+      "finished_at": "2026-07-02T09:43:15.145074",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "success",
+          "started_at": "2026-07-02T09:43:08.606721",
+          "finished_at": "2026-07-02T09:43:15.145074",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "success",
+          "started_at": "2026-07-02T09:43:08.606721",
+          "finished_at": "2026-07-02T09:43:15.145074",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "success",
+          "started_at": "2026-07-02T09:43:08.606721",
+          "finished_at": "2026-07-02T09:43:15.145074",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "success",
+          "started_at": "2026-07-02T09:43:08.606721",
+          "finished_at": "2026-07-02T09:43:15.145074",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "success",
+          "started_at": "2026-07-02T09:43:08.606721",
+          "finished_at": "2026-07-02T09:43:15.145074",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "success",
+          "started_at": "2026-07-02T09:43:08.606721",
+          "finished_at": "2026-07-02T09:43:15.145074",
+          "output": {},
+          "logs": [],
+          "error": null
+        }
+      ],
+      "logs": [
+        "[2026-07-02T09:43:08.606721] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T09:43:08.606721] Nodes: 6, Edges: 5",
+        "[2026-07-02T09:43:08.616364] Workflow builder created successfully",
+        "[2026-07-02T09:43:15.144563] event=None executor=workflow payload=None",
+        "[2026-07-02T09:43:15.145074] event=None executor=workflow payload=None",
+        "[2026-07-02T09:43:15.145074] event=None executor=workflow payload=None",
+        "[2026-07-02T09:43:15.145074] event=None executor=workflow payload=None",
+        "[2026-07-02T09:43:15.145074] event=None executor=workflow payload=None",
+        "[2026-07-02T09:43:15.145074] event=None executor=workflow payload=None",
+        "[DEBUG] outputs_by_executor keys: []",
+        "[DEBUG] node IDs: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[2026-07-02T09:43:15.145074] Pipeline completed successfully"
+      ]
+    },
+    {
+      "id": "b55b8f97-92f9-4efb-9755-aa896abac427",
+      "created_at": "2026-07-02T09:44:05.377599",
+      "updated_at": "2026-07-02T09:44:05.377599",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "success",
+      "started_at": "2026-07-02T09:44:05.377599",
+      "finished_at": "2026-07-02T09:44:12.975641",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "success",
+          "started_at": "2026-07-02T09:44:05.377599",
+          "finished_at": "2026-07-02T09:44:12.975641",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "success",
+          "started_at": "2026-07-02T09:44:05.377599",
+          "finished_at": "2026-07-02T09:44:12.975641",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "success",
+          "started_at": "2026-07-02T09:44:05.377599",
+          "finished_at": "2026-07-02T09:44:12.975641",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "success",
+          "started_at": "2026-07-02T09:44:05.377599",
+          "finished_at": "2026-07-02T09:44:12.975641",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "success",
+          "started_at": "2026-07-02T09:44:05.377599",
+          "finished_at": "2026-07-02T09:44:12.975641",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "success",
+          "started_at": "2026-07-02T09:44:05.377599",
+          "finished_at": "2026-07-02T09:44:12.975641",
+          "output": {},
+          "logs": [],
+          "error": null
+        }
+      ],
+      "logs": [
+        "[2026-07-02T09:44:05.377599] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T09:44:05.377599] Nodes: 6, Edges: 5",
+        "[2026-07-02T09:44:05.384347] Workflow builder created successfully",
+        "[2026-07-02T09:44:12.975641] event=None executor=workflow payload=None",
+        "[2026-07-02T09:44:12.975641] event=None executor=workflow payload=None",
+        "[2026-07-02T09:44:12.975641] event=None executor=workflow payload=None",
+        "[2026-07-02T09:44:12.975641] event=None executor=workflow payload=None",
+        "[2026-07-02T09:44:12.975641] event=None executor=workflow payload=None",
+        "[2026-07-02T09:44:12.975641] event=None executor=workflow payload=None",
+        "[DEBUG] outputs_by_executor keys: []",
+        "[DEBUG] node IDs: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[2026-07-02T09:44:12.975641] Pipeline completed successfully"
+      ]
+    },
+    {
+      "id": "61b9437f-456d-4b18-a286-39ade5c5ccbd",
+      "created_at": "2026-07-02T10:59:25.204400",
+      "updated_at": "2026-07-02T10:59:25.204400",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "success",
+      "started_at": "2026-07-02T10:59:25.202843",
+      "finished_at": "2026-07-02T10:59:37.500227",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "success",
+          "started_at": "2026-07-02T10:59:25.202843",
+          "finished_at": "2026-07-02T10:59:37.499229",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "success",
+          "started_at": "2026-07-02T10:59:25.202843",
+          "finished_at": "2026-07-02T10:59:37.500227",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "success",
+          "started_at": "2026-07-02T10:59:25.202843",
+          "finished_at": "2026-07-02T10:59:37.500227",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "success",
+          "started_at": "2026-07-02T10:59:25.202843",
+          "finished_at": "2026-07-02T10:59:37.500227",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "success",
+          "started_at": "2026-07-02T10:59:25.202843",
+          "finished_at": "2026-07-02T10:59:37.500227",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "success",
+          "started_at": "2026-07-02T10:59:25.202843",
+          "finished_at": "2026-07-02T10:59:37.500227",
+          "output": {},
+          "logs": [],
+          "error": null
+        }
+      ],
+      "logs": [
+        "[2026-07-02T10:59:25.202843] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T10:59:25.202843] Nodes: 6, Edges: 5",
+        "[2026-07-02T10:59:25.216230] Workflow builder created successfully",
+        "[2026-07-02T10:59:37.499229] event=None executor=workflow payload=None",
+        "[2026-07-02T10:59:37.499229] event=None executor=workflow payload=None",
+        "[2026-07-02T10:59:37.499229] event=None executor=workflow payload=None",
+        "[2026-07-02T10:59:37.499229] event=None executor=workflow payload=None",
+        "[2026-07-02T10:59:37.499229] event=None executor=workflow payload=None",
+        "[2026-07-02T10:59:37.499229] event=None executor=workflow payload=None",
+        "[DEBUG] outputs_by_executor keys: []",
+        "[DEBUG] node IDs: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[2026-07-02T10:59:37.500227] Pipeline completed successfully"
+      ]
+    },
+    {
+      "id": "993e0ef4-5193-4e91-a295-3f5bf662ce75",
+      "created_at": "2026-07-02T11:00:31.667855",
+      "updated_at": "2026-07-02T11:00:31.667855",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "success",
+      "started_at": "2026-07-02T11:00:31.667855",
+      "finished_at": "2026-07-02T11:00:38.054268",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "success",
+          "started_at": "2026-07-02T11:00:31.667855",
+          "finished_at": "2026-07-02T11:00:38.054268",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "success",
+          "started_at": "2026-07-02T11:00:31.667855",
+          "finished_at": "2026-07-02T11:00:38.054268",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "success",
+          "started_at": "2026-07-02T11:00:31.667855",
+          "finished_at": "2026-07-02T11:00:38.054268",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "success",
+          "started_at": "2026-07-02T11:00:31.667855",
+          "finished_at": "2026-07-02T11:00:38.054268",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "success",
+          "started_at": "2026-07-02T11:00:31.667855",
+          "finished_at": "2026-07-02T11:00:38.054268",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "success",
+          "started_at": "2026-07-02T11:00:31.667855",
+          "finished_at": "2026-07-02T11:00:38.054268",
+          "output": {},
+          "logs": [],
+          "error": null
+        }
+      ],
+      "logs": [
+        "[2026-07-02T11:00:31.667855] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T11:00:31.667855] Nodes: 6, Edges: 5",
+        "[2026-07-02T11:00:31.673137] Workflow builder created successfully",
+        "[2026-07-02T11:00:38.053673] event=None executor=workflow payload=None",
+        "[2026-07-02T11:00:38.053673] event=None executor=workflow payload=None",
+        "[2026-07-02T11:00:38.053673] event=None executor=workflow payload=None",
+        "[2026-07-02T11:00:38.053673] event=None executor=workflow payload=None",
+        "[2026-07-02T11:00:38.053673] event=None executor=workflow payload=None",
+        "[2026-07-02T11:00:38.053673] event=None executor=workflow payload=None",
+        "[DEBUG] outputs_by_executor keys: []",
+        "[DEBUG] node IDs: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[2026-07-02T11:00:38.054268] Pipeline completed successfully"
+      ]
+    },
+    {
+      "id": "dfd59399-e779-4b33-ab7e-cc1283709f15",
+      "created_at": "2026-07-02T11:09:33.320521",
+      "updated_at": "2026-07-02T11:09:33.320521",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "success",
+      "started_at": "2026-07-02T11:09:33.320521",
+      "finished_at": "2026-07-02T11:09:45.537497",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "success",
+          "started_at": "2026-07-02T11:09:33.320521",
+          "finished_at": "2026-07-02T11:09:45.536894",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "success",
+          "started_at": "2026-07-02T11:09:33.320521",
+          "finished_at": "2026-07-02T11:09:45.537497",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "success",
+          "started_at": "2026-07-02T11:09:33.320521",
+          "finished_at": "2026-07-02T11:09:45.537497",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "success",
+          "started_at": "2026-07-02T11:09:33.320521",
+          "finished_at": "2026-07-02T11:09:45.537497",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "success",
+          "started_at": "2026-07-02T11:09:33.320521",
+          "finished_at": "2026-07-02T11:09:45.537497",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "success",
+          "started_at": "2026-07-02T11:09:33.320521",
+          "finished_at": "2026-07-02T11:09:45.537497",
+          "output": {},
+          "logs": [],
+          "error": null
+        }
+      ],
+      "logs": [
+        "[2026-07-02T11:09:33.320521] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T11:09:33.320521] Nodes: 6, Edges: 5",
+        "[2026-07-02T11:09:33.337180] Workflow builder created successfully",
+        "[2026-07-02T11:09:45.536894] event=None executor=workflow payload=None",
+        "[2026-07-02T11:09:45.536894] event=None executor=workflow payload=None",
+        "[2026-07-02T11:09:45.536894] event=None executor=workflow payload=None",
+        "[2026-07-02T11:09:45.536894] event=None executor=workflow payload=None",
+        "[2026-07-02T11:09:45.536894] event=None executor=workflow payload=None",
+        "[2026-07-02T11:09:45.536894] event=None executor=workflow payload=None",
+        "[DEBUG] outputs_by_executor keys: []",
+        "[DEBUG] node IDs: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[2026-07-02T11:09:45.537497] Pipeline completed successfully"
+      ]
+    },
+    {
+      "id": "1a2ca9ae-eb22-44fe-9c23-8c7a501ff4d6",
+      "created_at": "2026-07-02T11:11:01.450255",
+      "updated_at": "2026-07-02T11:11:01.450255",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "success",
+      "started_at": "2026-07-02T11:11:01.450255",
+      "finished_at": "2026-07-02T11:11:10.788878",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "success",
+          "started_at": "2026-07-02T11:11:01.450255",
+          "finished_at": "2026-07-02T11:11:10.787332",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "success",
+          "started_at": "2026-07-02T11:11:01.450255",
+          "finished_at": "2026-07-02T11:11:10.788878",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "success",
+          "started_at": "2026-07-02T11:11:01.450255",
+          "finished_at": "2026-07-02T11:11:10.788878",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "success",
+          "started_at": "2026-07-02T11:11:01.450255",
+          "finished_at": "2026-07-02T11:11:10.788878",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "success",
+          "started_at": "2026-07-02T11:11:01.450255",
+          "finished_at": "2026-07-02T11:11:10.788878",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "success",
+          "started_at": "2026-07-02T11:11:01.450255",
+          "finished_at": "2026-07-02T11:11:10.788878",
+          "output": {},
+          "logs": [],
+          "error": null
+        }
+      ],
+      "logs": [
+        "[2026-07-02T11:11:01.450255] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T11:11:01.450255] Nodes: 6, Edges: 5",
+        "[2026-07-02T11:11:01.458617] Workflow builder created successfully",
+        "[2026-07-02T11:11:10.787332] event=None executor=workflow payload=None",
+        "[2026-07-02T11:11:10.787332] event=None executor=workflow payload=None",
+        "[2026-07-02T11:11:10.787332] event=None executor=workflow payload=None",
+        "[2026-07-02T11:11:10.787332] event=None executor=workflow payload=None",
+        "[2026-07-02T11:11:10.787332] event=None executor=workflow payload=None",
+        "[2026-07-02T11:11:10.787332] event=None executor=workflow payload=None",
+        "[DEBUG] outputs_by_executor keys: []",
+        "[DEBUG] node IDs: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[2026-07-02T11:11:10.788878] Pipeline completed successfully"
+      ]
+    },
+    {
+      "id": "4227f7fb-c8d6-43ec-9426-c0e754409cda",
+      "created_at": "2026-07-02T11:18:39.879710",
+      "updated_at": "2026-07-02T11:18:39.879710",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "failed",
+      "started_at": "2026-07-02T11:18:39.878710",
+      "finished_at": "2026-07-02T11:18:39.893414",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "failed",
+          "started_at": "2026-07-02T11:18:39.878710",
+          "finished_at": "2026-07-02T11:18:39.891900",
+          "output": {},
+          "logs": [
+            "NameError: name 'logger' is not defined"
+          ],
+          "error": "name 'logger' is not defined"
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "failed",
+          "started_at": "2026-07-02T11:18:39.878710",
+          "finished_at": "2026-07-02T11:18:39.893414",
+          "output": {},
+          "logs": [
+            "NameError: name 'logger' is not defined"
+          ],
+          "error": "name 'logger' is not defined"
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "failed",
+          "started_at": "2026-07-02T11:18:39.878710",
+          "finished_at": "2026-07-02T11:18:39.893414",
+          "output": {},
+          "logs": [
+            "NameError: name 'logger' is not defined"
+          ],
+          "error": "name 'logger' is not defined"
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "failed",
+          "started_at": "2026-07-02T11:18:39.878710",
+          "finished_at": "2026-07-02T11:18:39.893414",
+          "output": {},
+          "logs": [
+            "NameError: name 'logger' is not defined"
+          ],
+          "error": "name 'logger' is not defined"
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "failed",
+          "started_at": "2026-07-02T11:18:39.878710",
+          "finished_at": "2026-07-02T11:18:39.893414",
+          "output": {},
+          "logs": [
+            "NameError: name 'logger' is not defined"
+          ],
+          "error": "name 'logger' is not defined"
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "failed",
+          "started_at": "2026-07-02T11:18:39.878710",
+          "finished_at": "2026-07-02T11:18:39.893414",
+          "output": {},
+          "logs": [
+            "NameError: name 'logger' is not defined"
+          ],
+          "error": "name 'logger' is not defined"
+        }
+      ],
+      "logs": [
+        "[2026-07-02T11:18:39.878710] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T11:18:39.878710] Nodes: 6, Edges: 5",
+        "[2026-07-02T11:18:39.890881] Pipeline failed: NameError: name 'logger' is not defined",
+        "Traceback (most recent call last):\n  File \"C:\\Users\\ITS-523\\Documents\\Miicrosoft_agent_framework\\backend\\app\\services\\pipeline_service.py\", line 116, in run_pipeline\n    workflow = self._build_workflow(pipeline)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\ITS-523\\Documents\\Miicrosoft_agent_framework\\backend\\app\\services\\pipeline_service.py\", line 244, in _build_workflow\n    logger.info(f\"MySQL Config: host={mysql_config.host}, user={mysql_config.user}, database={mysql_config.database}\")\n    ^^^^^^\nNameError: name 'logger' is not defined\n"
+      ]
+    },
+    {
+      "id": "238fa318-0eab-4835-8508-f77262cd7daa",
+      "created_at": "2026-07-02T11:22:16.265459",
+      "updated_at": "2026-07-02T11:22:16.265459",
+      "pipeline_id": "8e62174a-614f-4153-a400-03dcdbce0136",
+      "pipeline_name": "MySQL to Snowflake ETL Pipeline",
+      "status": "success",
+      "started_at": "2026-07-02T11:22:16.265459",
+      "finished_at": "2026-07-02T11:22:29.646854",
+      "node_results": [
+        {
+          "node_id": "68880dda-2e7a-46f9-a867-44822da85f7d",
+          "node_label": "Extract from MySQL",
+          "executor_type": "mysql_source",
+          "status": "success",
+          "started_at": "2026-07-02T11:22:16.265459",
+          "finished_at": "2026-07-02T11:22:29.646210",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "0d32f473-8870-4ae5-a1d1-9749e6bf7ede",
+          "node_label": "Filter Rows",
+          "executor_type": "filter_transform",
+          "status": "success",
+          "started_at": "2026-07-02T11:22:16.265459",
+          "finished_at": "2026-07-02T11:22:29.646854",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "2f4a6dcc-ab09-4a5a-894b-4e811bd0e502",
+          "node_label": "Check Table Exists",
+          "executor_type": "check_table_exists",
+          "status": "success",
+          "started_at": "2026-07-02T11:22:16.265459",
+          "finished_at": "2026-07-02T11:22:29.646854",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "f66d4b38-7526-41ab-b87f-7abd179aa2a7",
+          "node_label": "Router",
+          "executor_type": "router",
+          "status": "success",
+          "started_at": "2026-07-02T11:22:16.265459",
+          "finished_at": "2026-07-02T11:22:29.646854",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "bd543fd1-26c5-44fa-a734-98fdfd031a9e",
+          "node_label": "Create Table",
+          "executor_type": "create_table",
+          "status": "success",
+          "started_at": "2026-07-02T11:22:16.265459",
+          "finished_at": "2026-07-02T11:22:29.646854",
+          "output": {},
+          "logs": [],
+          "error": null
+        },
+        {
+          "node_id": "9fe91f1e-0d67-4ec4-8400-f56567ee1384",
+          "node_label": "Load Data",
+          "executor_type": "load_data",
+          "status": "success",
+          "started_at": "2026-07-02T11:22:16.265459",
+          "finished_at": "2026-07-02T11:22:29.646854",
+          "output": {},
+          "logs": [],
+          "error": null
+        }
+      ],
+      "logs": [
+        "[2026-07-02T11:22:16.265459] Pipeline started: MySQL to Snowflake ETL Pipeline",
+        "[2026-07-02T11:22:16.265459] Nodes: 6, Edges: 5",
+        "[2026-07-02T11:22:16.275634] Workflow builder created successfully",
+        "[2026-07-02T11:22:29.646210] event=None executor=workflow payload=None",
+        "[2026-07-02T11:22:29.646210] event=None executor=workflow payload=None",
+        "[2026-07-02T11:22:29.646210] event=None executor=workflow payload=None",
+        "[2026-07-02T11:22:29.646210] event=None executor=workflow payload=None",
+        "[2026-07-02T11:22:29.646210] event=None executor=workflow payload=None",
+        "[2026-07-02T11:22:29.646210] event=None executor=workflow payload=None",
+        "[DEBUG] outputs_by_executor keys: []",
+        "[DEBUG] node IDs: ['68880dda-2e7a-46f9-a867-44822da85f7d', '0d32f473-8870-4ae5-a1d1-9749e6bf7ede', '2f4a6dcc-ab09-4a5a-894b-4e811bd0e502', 'f66d4b38-7526-41ab-b87f-7abd179aa2a7', 'bd543fd1-26c5-44fa-a734-98fdfd031a9e', '9fe91f1e-0d67-4ec4-8400-f56567ee1384']",
+        "[2026-07-02T11:22:29.646854] Pipeline completed successfully"
       ]
     }
   ]

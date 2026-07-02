@@ -1196,3 +1196,120 @@ pre {
   color: #6ee7b7;
   font-weight: 500;
 }
+
+.node-result-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.node-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #334155;
+}
+
+.node-header h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.node-logs {
+  margin-top: 12px;
+}
+
+.node-logs h5 {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.log-container {
+  background: #0f172a;
+  border-radius: 6px;
+  padding: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}
+
+.log-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid #1e293b;
+}
+
+.log-line:last-child {
+  border-bottom: none;
+}
+
+.log-time {
+  color: #64748b;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.log-message {
+  flex: 1;
+  color: #e2e8f0;
+  word-break: break-word;
+}
+
+.log-line.success .log-message {
+  color: #6ee7b7;
+}
+
+.log-line.error .log-message {
+  color: #fca5a5;
+}
+
+.log-line.transform .log-message {
+  color: #93c5fd;
+}
+
+.node-output {
+  margin-top: 12px;
+}
+
+.node-output h5 {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.output-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.stat {
+  background: #0f172a;
+  padding: 8px 12px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.stat-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e2e8f0;
+}

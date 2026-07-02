@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+import logging
 import asyncio
 import inspect
 import json
@@ -9,6 +9,8 @@ from pathlib import Path
 from typing import Any
 
 from agent_framework import WorkflowRunResult
+
+logger = logging.getLogger("PipelineService")
 
 # from app.etl_runtime import ConnectionConfig, create_etl_workflow
 from app.etl_runtime import (
@@ -115,9 +117,10 @@ class PipelineService:
         try:
             workflow = self._build_workflow(pipeline)
             logs.append(f"[{datetime.utcnow().isoformat()}] Workflow builder created successfully")
-            run_result = workflow.run({"pipeline_id": pipeline.id, "trigger": "ui"})
-            if inspect.isawaitable(run_result):
-                run_result = asyncio.run(run_result)
+            if inspect.iscoroutinefunction(workflow.run):
+                run_result = asyncio.run(workflow.run({"pipeline_id": pipeline.id, "trigger": "ui"}))
+            else:
+                run_result = workflow.run({"pipeline_id": pipeline.id, "trigger": "ui"})
 
             if not isinstance(run_result, WorkflowRunResult):
                 raise TypeError("Unexpected workflow result type.")
@@ -213,66 +216,90 @@ class PipelineService:
 
         # Build executors from nodes
         executors = {}
-        node_executors = {}  # Map node_id to executor
+        node_executors = {}
+        
+        # Find MySQL and Snowflake connections
+        mysql_connection = None
+        snowflake_connection = None
         
         for node in pipeline.nodes:
             node_config = self._node_config(node)
-            executor_type = node.type
             
-            # Get connections
-            mysql_conn = None
-            snowflake_conn = None
+            if node.type == "mysql_source":
+                conn_id = node_config.get("connection")
+                if conn_id and conn_id in connection_lookup:
+                    mysql_connection = connection_lookup[conn_id]
+                elif default_connection:
+                    mysql_connection = default_connection
+                    
+            elif node.type in ["load_data", "check_table_exists", "create_table"]:
+                conn_id = node_config.get("connection")
+                if conn_id and conn_id in connection_lookup:
+                    snowflake_connection = connection_lookup[conn_id]
+                elif default_connection:
+                    snowflake_connection = default_connection
+        
+        # Convert to ConnectionConfig
+        mysql_config = self._to_connection_config(mysql_connection) if mysql_connection else ConnectionConfig()
+        snowflake_config = self._to_connection_config(snowflake_connection) if snowflake_connection else ConnectionConfig()
+        
+        logger.info(f"MySQL Config: host={mysql_config.host}, user={mysql_config.user}, database={mysql_config.database}")
+        logger.info(f"Snowflake Config: account={snowflake_config.account}, warehouse={snowflake_config.warehouse}")
+        
+        # Create connectors
+        mysql_connector = MySQLConnector(mysql_config)
+        snowflake_connector = SnowflakeConnector(snowflake_config)
+        
+        # Create executors from nodes
+        for node in pipeline.nodes:
+            node_config = self._node_config(node)
             
-            if executor_type == "mysql_source":
-                mysql_conn = self._select_connection(connection_lookup, pipeline, "mysql_source", default_connection)
-            elif executor_type in ["load_data", "check_table_exists", "create_table"]:
-                snowflake_conn = self._select_connection(connection_lookup, pipeline, "load_data", default_connection)
-            
-            mysql_config = self._to_connection_config(mysql_conn) if mysql_conn else ConnectionConfig()
-            snowflake_config = self._to_connection_config(snowflake_conn) if snowflake_conn else ConnectionConfig()
-            
-            # Create executor based on type
-            if executor_type == "mysql_source":
+            if node.type == "mysql_source":
                 table = node_config.get("table", "customers")
-                executors[node.id] = ExtractExecutor(node.id, MySQLConnector(mysql_config), table)
+                executors[node.id] = ExtractExecutor(node.id, mysql_connector, table)
                 
-            elif executor_type == "filter_transform":
+            elif node.type == "filter_transform":
                 limit = node_config.get("limit", 10)
                 executors[node.id] = FilterTransformExecutor(node.id, limit=limit)
                 
-            elif executor_type == "transform_data":
+            elif node.type == "transform_data":
                 executors[node.id] = TransformExecutor(node.id)
                 
-            elif executor_type == "check_table_exists":
+            elif node.type == "check_table_exists":
                 table = node_config.get("table", "target_table")
-                executors[node.id] = CheckTableExistsExecutor(node.id, SnowflakeConnector(snowflake_config), table)
+                executors[node.id] = CheckTableExistsExecutor(node.id, snowflake_connector, table)
                 
-            elif executor_type == "create_table":
+            elif node.type == "create_table":
                 dest_table = node_config.get("destination_table", "warehouse.table")
-                source_table = node_config.get("source_table", "source_table")
+                source_table = node_config.get("source_table", table)  # Get from node config
+                source_db = node_config.get("source_db", "mysql")
+                target_db = node_config.get("target_db", "snowflake")
+                
                 executors[node.id] = CreateTableExecutor(
                     node.id, 
-                    SnowflakeConnector(snowflake_config), 
+                    snowflake_connector, 
                     dest_table,
-                    MySQLConnector(mysql_config),
-                    source_table
+                    mysql_connector,  # Pass the connector
+                    source_table,
+                    source_db=source_db,
+                    target_db=target_db,
                 )
                 
-            elif executor_type == "router":
+            elif node.type == "router":
                 routes = node_config.get("routes", {})
                 executors[node.id] = RouterExecutor(node.id, routes)
                 
-            elif executor_type == "load_data":
+            elif node.type == "load_data":
                 dest_table = node_config.get("destination_table", "warehouse.table")
-                executors[node.id] = LoadExecutor(node.id, SnowflakeConnector(snowflake_config), dest_table)
+                executors[node.id] = LoadExecutor(node.id, snowflake_connector, dest_table)
             
             node_executors[node.id] = executors[node.id]
         
-        # Build workflow from edges
+        # Build workflow from edges (rest of the code stays the same...)
         if not executors:
             raise ValueError("No executors found in pipeline")
         
-        # Find start executor (node with no incoming edges)
+        # Find start executor
         target_nodes = {edge.target for edge in pipeline.edges}
         start_executor = next(
             (exec for node_id, exec in executors.items() if node_id not in target_nodes),
@@ -287,18 +314,16 @@ class PipelineService:
             intermediate_output_from="all_other",
         )
         
-        # Add edges dynamically
+        # Add edges
         for edge in pipeline.edges:
             source_exec = executors.get(edge.source)
             target_exec = executors.get(edge.target)
             
             if source_exec and target_exec:
-                # Check if edge has condition (for router)
                 condition = None
                 if hasattr(edge, 'data') and edge.data:
                     condition_data = edge.data.get('condition')
                     if condition_data:
-                        # Parse condition from edge data
                         if condition_data == "table_exists_true":
                             condition = lambda msg: msg.get("table_exists", False)
                         elif condition_data == "table_exists_false":
@@ -307,6 +332,7 @@ class PipelineService:
                 builder.add_edge(source_exec, target_exec, condition=condition)
         
         return builder.build()
+
     def _select_connection(
         self,
         connection_lookup: dict[str, Connection],
